@@ -1,3 +1,4 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  get "work_orders", to: "work_orders#index"
+  root to: "work_orders#index"
 end
