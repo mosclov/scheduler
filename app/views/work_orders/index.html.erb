@@ -1,7 +1,7 @@
 <div class="container">
   <h1>Work Orders for October 1, 2019</h1>
   <br>
-  <table class="table table-striped">
+  <table class="table table-bordered">
     <thead>
       <tr>
         <% @headers.each do |header| %>
@@ -12,7 +12,7 @@
     <tbody>
       <% @times.each do |time| %>
         <% work_time = Time.parse(time) %>
-        <tr class="trPointer pointer">
+        <tr class="trPointer">
           <th><%= time %></th>
           <% @technicians.each do |technician| %>
             <% validate_orders(technician, work_time)%>
@@ -24,11 +24,12 @@
                 <br> $<%= @order_info.price %>
               </td>
             <% else %>
-              <td data-bs-toggle="modal" data-bs-target="#<%= dom_id(@dom) %>">
+              <td class="pointer" data-bs-toggle="modal" data-bs-target="#<%= dom_id(@dom) %>">
                 <%= render partial: "popup", locals: {available_time: @available_time, dom: @dom} %>
               </td>
             <% end %>
           <% end %>
+        </tr>
       <% end %>
     </tbody>
   </table>
