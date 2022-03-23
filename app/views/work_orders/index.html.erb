@@ -1,5 +1,6 @@
-<h1>Work Orders for October 1, 2019</h1>
-<br>
+<div class="container">
+  <h1>Work Orders for October 1, 2019</h1>
+  <br>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -8,32 +9,27 @@
         <% end %>
       </tr>
     </thead>
-
     <tbody>
       <% @times.each do |time| %>
         <% work_time = Time.parse(time) %>
         <tr class="trPointer">
           <th><%= time %></th>
           <% @technicians.each do |technician| %>
-            <% order_info = nil%>
-            <% technician.work_orders.each do |order| %>
-              <% start_time = Time.parse(order.time.strftime("%H:%M")) %>
-              <% end_time = start_time + order.duration.minutes%>
-              <% if time_valid?(work_time, start_time, end_time) %>
-                <% order_info = order %>
-              <% end %>
-            <% end %>
-            <% if order_info %>
-              <td><%= order_info.location.name %>
-                <%= order_info.location.city %>
-                <br> <%= order_info.location.city %>
-                <br> <%= order_info.time.strftime("%H:%M") %>
-                <br> $<%= order_info.price %>
+            <% validate_orders(technician, work_time)%>
+            <% if @order_info %>
+              <td><%= @order_info.location.name %>
+                <%= @order_info.location.city %>
+                <br> <%= @order_info.location.city %>
+                <br> <%= @order_info.time.strftime("%H:%M") %>
+                <br> $<%= @order_info.price %>
               </td>
             <% else %>
-              <td>x</td>
+              <td data-bs-toggle="modal" data-bs-target="#<%= dom_id(@dom) %>">
+                <%= render partial: "popup", locals: {available_time: @available_time, dom: @dom} %>
+              </td>
             <% end %>
           <% end %>
       <% end %>
     </tbody>
   </table>
+</div>
