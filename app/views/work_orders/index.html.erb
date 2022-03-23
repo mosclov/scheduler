@@ -12,7 +12,7 @@
     <tbody>
       <% @times.each do |time| %>
         <% work_time = Time.parse(time) %>
-        <tr class="trPointer">
+        <tr class="trPointer pointer">
           <th><%= time %></th>
           <% @technicians.each do |technician| %>
             <% validate_orders(technician, work_time)%>

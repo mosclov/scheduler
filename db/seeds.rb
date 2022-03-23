@@ -1,7 +1,22 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+require 'csv'
+
+technicians_file = Rails.root.join('db', 'technicians.csv')
+CSV.foreach(technicians_file, headers: true) do |row|
+ Technician.where(name: row['name']).first_or_create
+end
+
+locations_file = Rails.root.join('db', 'locations.csv')
+CSV.foreach(locations_file, headers: true) do |row|
+ Location.where(name: row['name'], city: row['city']).first_or_create
+end
+
+work_orders_file = Rails.root.join('db', 'work_orders.csv')
+CSV.foreach(work_orders_file, headers: true) do |row|
+ WorkOrder.where(
+   technician_id: row['technician_id'],
+   location_id:   row['location_id'],
+   time:          Time.parse(row['time']),
+   duration:      row['duration'],
+   price:         row['price']
+ ).first_or_create
+end
